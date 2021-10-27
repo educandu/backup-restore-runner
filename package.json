@@ -8,18 +8,24 @@
   "keywords": [],
   "license": "MIT",
   "author": "Educandu Team <team@educandu.dev>",
-  "homepage": "https://github.com/educandu/backup-runner",
+  "homepage": "https://github.com/educandu/backup-restore-runner",
   "repository": {
     "type": "git",
-    "url": "https://github.com/educandu/backup-runner"
+    "url": "https://github.com/educandu/backup-restore-runner"
   },
   "private": true,
   "scripts": {
-    "runBackup": "node ./src/backup-runner.js"
+    "lint": "eslint src --ext .js",
+    "backup": "node ./src/backup.js",
+    "restore": "node ./src/restore.js"
   },
   "dependencies": {
     "archiver": "~5.3.0",
     "aws-sdk": "~2.548.0",
     "dayjs": "~1.10.7"
+  },
+  "devDependencies": {
+    "eslint": "^8.1.0",
+    "eslint-plugin-import": "^2.25.2"
   }
 }
