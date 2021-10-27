@@ -1,0 +1,25 @@
+{
+  "name": "backup-runner",
+  "version": "1.0.0",
+  "description": "Tool for executing MongoDB and S3 backups",
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "author": "Educandu Team <team@educandu.dev>",
+  "homepage": "https://github.com/educandu/backup-runner",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/educandu/backup-runner"
+  },
+  "private": true,
+  "scripts": {
+    "runBackup": "node ./src/backup-runner.js"
+  },
+  "dependencies": {
+    "archiver": "~5.3.0",
+    "aws-sdk": "~2.548.0",
+    "dayjs": "~1.10.7"
+  }
+}
