@@ -5,27 +5,28 @@ function getFolderName(obj) {
 }
 
 module.exports.run = async ({ s3, backupBucketName, maxBackupCount }) => {
-  try {
-    console.log(`Starting cleanup of the S3 bucket '${backupBucketName}' to reduce it to ${maxBackupCount} backups`);
+  console.log(`Starting cleanup of the S3 bucket '${backupBucketName}' to reduce it to ${maxBackupCount} backups`);
 
-    const backupObjects = await s3Helper.listAllObjects({ s3, bucketName: backupBucketName });
-    const backupFolders = new Set(...backupObjects.map(getFolderName));
-    const backupFoldersOldestToNewest = Array.from(backupFolders).sort();
-    const backupFoldersToDelete = backupFoldersOldestToNewest.slice(-maxBackupCount);
+  const backupObjects = await s3Helper.listAllObjects({ s3, bucketName: backupBucketName });
+  const backupFolders = new Set(backupObjects.map(getFolderName));
+  const backupFoldersNewestToOldest = Array.from(backupFolders).sort().reverse();
+  console.log(`Found backups: ${backupFoldersNewestToOldest}`);
+  const backupFoldersToDelete = backupFoldersNewestToOldest.splice(maxBackupCount);
 
-    for (const obj of backupObjects) {
-      const folderName = getFolderName(obj);
-
-      if (backupFoldersToDelete.includes(folderName)) {
-        console.log(`Deleting object ${obj.Key}`);
-        /* eslint-disable no-await-in-loop */
-        await s3Helper.deleteObject({ s3, bucketName: backupBucketName, key: obj.Key });
-      }
-    }
-
-    console.log('Finished cleaning up.');
-
-  } catch (error) {
-    console.log('Error cleaning up: ', error);
+  if (backupFoldersToDelete.length) {
+    console.log(`Deleting backups: ${backupFoldersToDelete}`);
+  } else {
+    console.log('There are no extra backups to remove.');
   }
+
+  for (const obj of backupObjects) {
+    const folderName = getFolderName(obj);
+
+    if (backupFoldersToDelete.includes(folderName)) {
+      /* eslint-disable no-await-in-loop */
+      await s3Helper.deleteObject({ s3, bucketName: backupBucketName, key: obj.Key });
+    }
+  }
+
+  console.log('Finished cleaning up.');
 };

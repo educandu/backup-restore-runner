@@ -16,23 +16,35 @@ const s3 = new S3({
 const backupBucketFolder = dayjs().format('YYYYMMDD_HHmmss');
 
 (async () => {
-  await mongoDbBackupRunner.run({
-    s3,
-    mongoDbUri: env.mongoDbUri,
-    backupBucketName: env.backupBucketName,
-    backupBucketFolder
-  });
+  try {
+    await mongoDbBackupRunner.run({
+      s3,
+      mongoDbUri: env.mongoDbUri,
+      backupBucketName: env.backupBucketName,
+      backupBucketFolder
+    });
+  } catch (error) {
+    console.log('MongodB backup was unsuccessfull. Error: ', error);
+  }
 
-  await s3BackupRunner.run({
-    s3,
-    bucketName: env.bucketName,
-    backupBucketName: env.backupBucketName,
-    backupBucketFolder
-  });
+  try {
+    await s3BackupRunner.run({
+      s3,
+      bucketName: env.bucketName,
+      backupBucketName: env.backupBucketName,
+      backupBucketFolder
+    });
+  } catch (error) {
+    console.log('S3 bucket backup was unsuccessfull. Error: ', error);
+  }
 
-  await cleanupRunner.run({
-    s3,
-    backupBucketName: env.backupBucketName,
-    maxBackupCount: env.maxBackupCount
-  });
+  try {
+    await cleanupRunner.run({
+      s3,
+      backupBucketName: env.backupBucketName,
+      maxBackupCount: env.maxBackupCount
+    });
+  } catch (error) {
+    console.log('Cleanup was unsuccessfull. Error: ', error);
+  }
 })();

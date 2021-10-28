@@ -24,7 +24,7 @@
     "arrow-parens": ["error", "as-needed"],
     "arrow-body-style": ["off"],
     "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
-    "capitalized-comments": ["error", "always", { "ignoreConsecutiveComments": true }],
+    "capitalized-comments": ["off"],
     "class-methods-use-this": ["off"],
     "dot-location": ["error", "property"],
     "func-names": ["error", "as-needed"],

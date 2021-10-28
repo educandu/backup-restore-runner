@@ -22,7 +22,8 @@
   "dependencies": {
     "archiver": "~5.3.0",
     "aws-sdk": "~2.548.0",
-    "dayjs": "~1.10.7"
+    "dayjs": "~1.10.7",
+    "unzipper": "^0.10.11"
   },
   "devDependencies": {
     "eslint": "^8.1.0",

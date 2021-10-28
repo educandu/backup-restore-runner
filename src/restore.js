@@ -13,17 +13,25 @@ const s3 = new S3({
 });
 
 (async () => {
-  await mongoDbRestoreRunner.run({
-    s3,
-    bucketName: env.backupBucketName,
-    objectKey: env.mongoDbObjectKey,
-    mongoDbUri: env.mongoDbUri
-  });
+  try {
+    await mongoDbRestoreRunner.run({
+      s3,
+      bucketName: env.backupBucketName,
+      objectKey: env.mongoDbObjectKey,
+      mongoDbUri: env.mongoDbUri
+    });
+  } catch (error) {
+    console.log('MongodB restore was unsuccessfull. Error: ', error);
+  }
 
-  await s3RestoreRunner.run({
-    s3,
-    bucketName: env.bucketName,
-    backupBucketName: env.backupBucketName,
-    keysPrefix: env.s3ObjectKeysPrefix
-  });
+  try {
+    await s3RestoreRunner.run({
+      s3,
+      bucketName: env.bucketName,
+      backupBucketName: env.backupBucketName,
+      backupKeysPrefix: env.s3ObjectKeysPrefix
+    });
+  } catch (error) {
+    console.log('S3 bucket restore was unsuccessfull. Error: ', error);
+  }
 })();

@@ -52,40 +52,8 @@ function deleteObject({ s3, bucketName, key }) {
   });
 }
 
-function downloadZipFile({ s3, bucketName, objectKey, fileWriteStream }) {
-  const params = {
-    Bucket: bucketName,
-    Key: objectKey
-  };
-  const s3Stream = s3.getObject(params).createReadStream();
-
-  return new Promise((resolve, reject) => {
-    s3Stream.on('error', error => reject(error));
-
-    s3Stream.pipe(fileWriteStream).on('error', error => {
-      reject(error);
-    }).on('close', () => resolve());
-  });
-}
-
-function uploadZipFile({ s3, bucketName, key, data }) {
-  const params = {
-    Bucket: bucketName,
-    Key: key,
-    Body: data,
-    ContentType: 'application/zip',
-    ServerSideEncryption: 'AES256',
-    StorageClass: 'STANDARD'
-  };
-  return new Promise((resolve, reject) => {
-    s3.upload(params, (err, uploadData) => err ? reject(err) : resolve(uploadData));
-  });
-}
-
 module.exports = {
   listAllObjects,
   copyObject,
-  deleteObject,
-  uploadZipFile,
-  downloadZipFile
+  deleteObject
 };

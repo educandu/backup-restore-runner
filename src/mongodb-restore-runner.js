@@ -1,32 +1,57 @@
 const fs = require('fs');
-const { promisify } = require('util');
-const s3Helper = require('./s3-helper');
-const exec = promisify(require('child_process').exec);
+const unzipper = require('unzipper');
+const exec = require('child_process').exec;
 
 function getLastPartInPath(path) {
   const parts = path.split('/');
   return parts.pop();
 }
 
-module.exports.run = async ({ s3, bucketName, objectKey, mongoDbUri }) => {
-  try {
-    const databaseName = getLastPartInPath(mongoDbUri);
-    const fileName = getLastPartInPath(objectKey);
+module.exports.run = ({ s3, bucketName, objectKey, mongoDbUri }) => {
+  const databaseName = getLastPartInPath(mongoDbUri);
+  const zipFileName = getLastPartInPath(objectKey);
 
-    console.log(`Starting to restore mongoDB backup '${objectKey}' from S3 bucket '${bucketName}' to '${databaseName}' database`);
+  console.log(`Starting mongoDB restore backup '${objectKey}' from S3 bucket '${bucketName}' to '${databaseName}' database`);
 
-    const fileWriteStream = fs.createWriteStream(fileName);
+  return new Promise((resolve, reject) => {
+    const fileWriteStream = fs.createWriteStream(zipFileName);
 
-    await s3Helper.downloadZipFile({ s3, bucketName, objectKey, fileWriteStream });
-    console.log(`Downloaded file ${fileName}`);
+    const params = {
+      Bucket: bucketName,
+      Key: objectKey
+    };
+    const s3Stream = s3.getObject(params).createReadStream();
+    s3Stream.on('error', s3Error => reject(s3Error));
 
-    fileWriteStream.end();
+    s3Stream.pipe(fileWriteStream)
+      .on('error', s3Error => reject(s3Error))
+      .on('close', () => {
+        if (fs.existsSync(zipFileName)) {
+          console.log(`Downloaded file '${zipFileName}'`);
+        }
 
-    await exec(`mongorestore --drop --uri "${mongoDbUri}" --db "${databaseName}" --archive "${fileName}" --dryRun`);
+        fs.createReadStream(zipFileName)
+          /* eslint-disable new-cap */
+          .pipe(unzipper.Extract({ path: '/temp' }))
+          .on('error', unzipError => {
+            console.log(`Error unzipping '${zipFileName}'`);
+            reject(unzipError);
+          });
 
-    console.log('Finished running mongoDb restore');
+        const getDirectories = source => fs.readdirSync(source, { withFileTypes: true })
+          .map(dirent => dirent.name);
 
-  } catch (error) {
-    console.log('Error restoring mongoDB from S3 bucket: ', error);
-  }
+        console.log(getDirectories('.'));
+
+        console.log('Running mongoDB restore...');
+        exec(`mongorestore --drop --uri "${mongoDbUri}" --nsInclude "${databaseName}.*" --dir "/temp"`, execError => {
+          if (execError) {
+            console.log('Error restoring mongoDB from S3 bucket: ', execError);
+            reject(execError);
+          }
+          console.log('Finished mongoDB restore');
+          resolve();
+        });
+      });
+  });
 };
