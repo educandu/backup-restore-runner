@@ -14,7 +14,9 @@ const getCommonVariables = () => {
     s3SecretKey: ensureEnv('S3_SECRET_KEY'),
     bucketName: ensureEnv('S3_BUCKET'),
     backupBucketName: ensureEnv('S3_BACKUP_BUCKET'),
-    mongoDbUri: ensureEnv('MONGODB_URI')
+    mongoDbUri: ensureEnv('MONGODB_URI'),
+    slackToken: process.env.SLACK_TOKEN,
+    slackChannel: process.env.SLACK_CHANNEL
   };
 };
 

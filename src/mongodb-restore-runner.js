@@ -1,14 +1,10 @@
 const fs = require('fs');
 const exec = require('child_process').exec;
-
-function getLastPartInPath(filePath) {
-  const parts = filePath.split('/');
-  return parts.pop();
-}
+const stringHelper = require('./string-helper');
 
 module.exports.run = ({ s3, bucketName, objectKey, mongoDbUri }) => {
-  const databaseName = getLastPartInPath(mongoDbUri);
-  const zipFileName = getLastPartInPath(objectKey);
+  const databaseName = stringHelper.getDatabaseNameFromUri(mongoDbUri);
+  const zipFileName = stringHelper.getFileNameFromPath(objectKey);
   const unzipFolder = './temp';
 
   console.log(`Starting mongoDB restore backup '${objectKey}' from S3 bucket '${bucketName}' to '${databaseName}' database`);

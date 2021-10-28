@@ -1,14 +1,10 @@
 const fs = require('fs');
 const archiver = require('archiver');
 const exec = require('child_process').exec;
-
-function getDatabaseName(mongoDbUri) {
-  const parts = mongoDbUri.split('/');
-  return parts.pop();
-}
+const stringHelper = require('./string-helper');
 
 module.exports.run = ({ s3, mongoDbUri, backupBucketName, backupBucketFolder }) => {
-  const fileName = getDatabaseName(mongoDbUri);
+  const fileName = stringHelper.getDatabaseNameFromUri(mongoDbUri);
   const fileNameWithExtension = `${fileName}.zip`;
   const folderName = `/tmp/${fileName}/`;
   const filePath = `/tmp/${fileNameWithExtension}`;

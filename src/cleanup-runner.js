@@ -1,14 +1,11 @@
 const s3Helper = require('./s3-helper');
-
-function getFolderName(obj) {
-  return obj.Key.split('/')[0];
-}
+const stringHelper = require('./string-helper');
 
 module.exports.run = async ({ s3, backupBucketName, maxBackupCount }) => {
   console.log(`Starting cleanup of the S3 bucket '${backupBucketName}' to reduce it to ${maxBackupCount} backups`);
 
   const backupObjects = await s3Helper.listAllObjects({ s3, bucketName: backupBucketName });
-  const backupFolders = new Set(backupObjects.map(getFolderName));
+  const backupFolders = new Set(backupObjects.map(stringHelper.getFolderNameFromS3Object));
   const backupFoldersNewestToOldest = Array.from(backupFolders).sort().reverse();
   console.log(`Found backups: ${backupFoldersNewestToOldest}`);
   const backupFoldersToDelete = backupFoldersNewestToOldest.splice(maxBackupCount);
@@ -20,7 +17,7 @@ module.exports.run = async ({ s3, backupBucketName, maxBackupCount }) => {
   }
 
   for (const obj of backupObjects) {
-    const folderName = getFolderName(obj);
+    const folderName = stringHelper.getFolderNameFromS3Object(obj);
 
     if (backupFoldersToDelete.includes(folderName)) {
       /* eslint-disable no-await-in-loop */
