@@ -16,9 +16,7 @@ Tool for running a MongoDB and an S3 bucket backup (in sequence).
 | MONGODB_OBJECT_KEY | The key of the mongoDB backup to restore (e.g. `20211027_092404/stag-elmu-web.zip`) | Restore |
 | S3_OBJECT_KEYS_PREFIX | The prefix of the S3 backup to restore (e.g. `20211027_092404/staging.cdn.elmu.online/`) | Restore |
 | MAX_BACKUP_COUNT | The maximum number of (latest) backups to keep (defaults to 5) | Backup 
-| SLACK_TOKEN | Slack OAuth Token for sending status report messages [Optional] | Backup, Restore |
-| SLACK_CHANNEL | Slack Channel for sending status report messages [Optional] | Backup, Restore |
-
+| SLACK_WEBHOOK_URL | WebhookURL for sending Slack notifications with run statuses [Optional] | Backup, Restore |
 ## Usage
 
 Create the docker image:

@@ -18,7 +18,7 @@ const s3 = new S3({
 const backupBucketFolder = dayjs().format('YYYYMMDD_HHmmss');
 
 (async () => {
-  const slackClient = slack.getClient({ token: env.slackToken, channel: env.slackChannel });
+  const slackClient = slack.getClient(env.slackWebhookUrl);
 
   const runMongoDbBackup = async () => {
     try {
@@ -30,8 +30,8 @@ const backupBucketFolder = dayjs().format('YYYYMMDD_HHmmss');
       });
     } catch (error) {
       const database = stringHelper.getDatabaseNameFromUri(env.mongoDbUri);
-      console.log('MongodB backup was unsuccessfull. Error: ', error);
-      slackClient.postMessage(`*Error* backing up mongoDB '${database}'`, error);
+      console.log('Failed to restore mongoDB', error);
+      await slackClient.notify(`Failed to restore mongoDB _${database}_`, error);
       return false;
     }
     return true;
@@ -46,8 +46,8 @@ const backupBucketFolder = dayjs().format('YYYYMMDD_HHmmss');
         backupBucketFolder
       });
     } catch (error) {
-      console.log('S3 bucket backup was unsuccessfull. Error: ', error);
-      slackClient.postMessage(`*Error* backing up S3 bucket '${env.bucketName}'`, error);
+      console.log('Failed to restore mongoDB S3 bucket', error);
+      await slackClient.notify(`Failed to restore S3 bucket _${env.bucketName}_`, error);
       return false;
     }
     return true;
@@ -61,8 +61,8 @@ const backupBucketFolder = dayjs().format('YYYYMMDD_HHmmss');
         maxBackupCount: env.maxBackupCount
       });
     } catch (error) {
-      console.log('Cleanup was unsuccessfull. Error: ', error);
-      slackClient.postMessage(`*Error* cleaning up S3 bucket ${env.backupBucketName}`, error);
+      console.log('Failed to clean up', error);
+      await slackClient.notify(`Failed to clean up S3 bucket _${env.backupBucketName}_`, error);
       return false;
     }
     return true;
@@ -74,6 +74,6 @@ const backupBucketFolder = dayjs().format('YYYYMMDD_HHmmss');
   success = await runCleanup() && success;
 
   if (success) {
-    slackClient.postSuccess(`Succesfully created backup ${backupBucketFolder} in S3 bucket ${env.backupBucketName}`);
+    await slackClient.postSuccess(`Created backup _${backupBucketFolder}_ in S3 bucket _${env.backupBucketName}_`);
   }
 })();

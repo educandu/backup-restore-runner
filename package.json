@@ -20,10 +20,10 @@
     "restore": "node ./src/restore.js"
   },
   "dependencies": {
-    "@slack/web-api": "^6.4.0",
     "archiver": "~5.3.0",
     "aws-sdk": "~2.548.0",
-    "dayjs": "~1.10.7"
+    "dayjs": "~1.10.7",
+    "superagent": "^6.1.0"
   },
   "devDependencies": {
     "eslint": "^8.1.0",

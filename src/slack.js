@@ -1,32 +1,30 @@
-const { WebClient } = require('@slack/web-api');
+const superagent = require('superagent');
 
-module.exports.getClient = ({ token, channel }) => {
-  let client;
+module.exports.getClient = slackWebhookUrl => {
   const response = {
-    postMessage: () => {}
+    notify: () => { }
   };
 
-  if (!token || !channel) {
+  if (!slackWebhookUrl) {
     return response;
   }
 
-  try {
-    client = new WebClient(token);
-  } catch (error) {
-    console.log(error);
+  return {
+    notify: async (message, error) => {
+      const successtText = `:white_check_mark: ${message}`;
+      const errorText
+        = '<!channel> \n'
+        + `:x: ${message} \n`
+        + `\`\`\`${JSON.stringify({ message: error?.message, stack: error?.stack })}\`\`\``;
 
-    return response;
-  }
-
-  response.postMessage = async (message, error) => {
-    try {
-      const errorText = error ? `Error: ${JSON.stringify({ message: error?.message, stack: error?.stack })}` : '';
-      const text = `${message}${errorText}`;
-      await client.chat.postMessage({ text, channel });
-    } catch (slackError) {
-      console.log(`Error posting message '${message}' to channel slack '${channel}': `, slackError);
+      try {
+        await superagent
+          .post(slackWebhookUrl)
+          .type('json')
+          .send({ text: error ? errorText : successtText });
+      } catch (slackError) {
+        console.log(slackError);
+      }
     }
   };
-
-  return response;
 };

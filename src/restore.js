@@ -15,7 +15,7 @@ const s3 = new S3({
 });
 
 (async () => {
-  const slackClient = slack.getClient({ token: env.slackToken, channel: env.slackChannel });
+  const slackClient = slack.getClient(env.slackWebhookUrl);
 
   const runMongoDbRestore = async () => {
     try {
@@ -27,8 +27,8 @@ const s3 = new S3({
       });
     } catch (error) {
       const database = stringHelper.getDatabaseNameFromUri(env.mongoDbUri);
-      slackClient.postMessage(`*Error* restoring mongoDB '${database}'`, error);
-      console.log('MongodB restore was unsuccessfull. Error: ', error);
+      slackClient.notify(`Failed to restore mongoDB _${database}_`, error);
+      console.log('Failed to restore mongoDB', error);
       return false;
     }
     return true;
@@ -43,8 +43,8 @@ const s3 = new S3({
         backupKeysPrefix: env.s3ObjectKeysPrefix
       });
     } catch (error) {
-      console.log('S3 bucket restore was unsuccessfull. Error: ', error);
-      slackClient.postMessage(`*Error* restoring S3 bucket '${env.bucketName}'`, error);
+      console.log('Failed to restore S3 bucket', error);
+      slackClient.notify(`Failed to restore S3 bucket _${env.bucketName}_`, error);
       return false;
     }
     return true;
@@ -55,6 +55,6 @@ const s3 = new S3({
   success = await runS3Restore() && success;
 
   if (success) {
-    slackClient.postMessage(`Succesfully restored backups '${env.mongoDbObjectKey}' and '${env.s3ObjectKeysPrefix}'`);
+    slackClient.notify(`Restored backups _${env.mongoDbObjectKey}_ and _${env.s3ObjectKeysPrefix}_`);
   }
 })();
