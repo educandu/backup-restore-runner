@@ -5,7 +5,7 @@ Tool for running a MongoDB and an S3 bucket backup (in sequence).
 ## Environment variables
 
 | Variable | Description | Purpose |
-| --- | --- | --- | --- |
+| --- | --- | --- |
 | S3_ENDPOINT | The S3 entrypoint (e.g. 'https://s3.eu-central-1.amazonaws.com') | Backup, Restore |
 | S3_REGION | The S3 region (e.g. 'eu-central-1') | Backup, Restore |
 | S3_ACCESS_KEY | The S3 access key of the auth credentials | Backup, Restore |
