@@ -71,4 +71,4 @@ jobs:
         with:
           push: true
           context: .
-          tags: ${{ env.DOCKER_IMAGE }}:${{ env.RELEASE_NUMBER }}
+          tags: ${{ env.DOCKER_IMAGE }}:${{ env.RELEASE_NUMBER }} ${{ env.DOCKER_IMAGE }}:latest
