@@ -74,6 +74,6 @@ const backupBucketFolder = dayjs().format('YYYYMMDD_HHmmss');
   success = await runCleanup() && success;
 
   if (success) {
-    await slackClient.postSuccess(`Created backup _${backupBucketFolder}_ in S3 bucket _${env.backupBucketName}_`);
+    await slackClient.notify(`Created backup _${backupBucketFolder}_ in S3 bucket _${env.backupBucketName}_`);
   }
 })();
