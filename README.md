@@ -1,6 +1,6 @@
 # backup-runner
 
-Tool for running a MongoDB and an S3 bucket backup (in sequence).
+NodeJS tool for running a MongoDB and an S3 bucket backup (in sequence).
 
 ## Environment variables
 
