@@ -6,6 +6,6 @@ WORKDIR /usr/app
 
 COPY ./ ./
 
-RUN npm ci
+RUN npm install
 
 ENTRYPOINT ["npm", "run"]
