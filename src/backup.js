@@ -7,17 +7,19 @@ const cleanupRunner = require('./cleanup-runner');
 const s3BackupRunner = require('./s3-backup-runner');
 const mongoDbBackupRunner = require('./mongodb-backup-runner');
 
-const env = envHelper.getForBackup();
+module.exports.backup = async () => {
 
-const s3 = new S3({
-  apiVersion: '2006-03-01',
-  endpoint: env.s3Endpoint,
-  region: env.s3Region,
-  credentials: new Credentials(env.s3AccessKey, env.s3SecretKey)
-});
-const backupBucketFolder = dayjs().format('YYYYMMDD_HHmmss');
+  const env = envHelper.getForBackup();
 
-(async () => {
+  const s3 = new S3({
+    apiVersion: '2006-03-01',
+    endpoint: env.s3Endpoint,
+    region: env.s3Region,
+    credentials: new Credentials(env.s3AccessKey, env.s3SecretKey)
+  });
+
+  const backupBucketFolder = dayjs().format('YYYYMMDD_HHmmss');
+
   const slackClient = slack.getClient(env.slackWebhookUrl);
 
   const runMongoDbBackup = async () => {
@@ -68,12 +70,11 @@ const backupBucketFolder = dayjs().format('YYYYMMDD_HHmmss');
     return true;
   };
 
-  let success = true;
-  success = await runMongoDbBackup() && success;
+  let success = await runMongoDbBackup();
   success = await runS3Backup() && success;
-  success = await runCleanup() && success;
 
   if (success) {
+    await runCleanup();
     await slackClient.notify(`Created backup _${backupBucketFolder}_ in S3 bucket _${env.backupBucketName}_`);
   }
-})();
+};

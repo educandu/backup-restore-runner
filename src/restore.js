@@ -5,16 +5,17 @@ const stringHelper = require('./string-helper');
 const s3RestoreRunner = require('./s3-restore-runner');
 const mongoDbRestoreRunner = require('./mongodb-restore-runner');
 
-const env = envHelper.getForRestore();
+module.exports.restore = async () => {
 
-const s3 = new S3({
-  apiVersion: '2006-03-01',
-  endpoint: env.s3Endpoint,
-  region: env.s3Region,
-  credentials: new Credentials(env.s3AccessKey, env.s3SecretKey)
-});
+  const env = envHelper.getForRestore();
 
-(async () => {
+  const s3 = new S3({
+    apiVersion: '2006-03-01',
+    endpoint: env.s3Endpoint,
+    region: env.s3Region,
+    credentials: new Credentials(env.s3AccessKey, env.s3SecretKey)
+  });
+
   const slackClient = slack.getClient(env.slackWebhookUrl);
 
   const runMongoDbRestore = async () => {
@@ -50,11 +51,10 @@ const s3 = new S3({
     return true;
   };
 
-  let success = true;
-  success = await runMongoDbRestore() && success;
+  let success = await runMongoDbRestore();
   success = await runS3Restore() && success;
 
   if (success) {
     slackClient.notify(`Restored backups _${env.mongoDbObjectKey}_ and _${env.s3ObjectKeysPrefix}_`);
   }
-})();
+};
