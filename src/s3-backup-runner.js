@@ -13,7 +13,8 @@ module.exports.run = async ({ s3, bucketName, backupBucketName, backupBucketFold
       sourceBucketName: bucketName,
       sourceKey,
       destinationBucketName: backupBucketName,
-      destinationKey
+      destinationKey,
+      objectToCopy: obj
     });
   }
 
