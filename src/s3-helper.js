@@ -29,12 +29,12 @@ async function listAllObjects({ s3, bucketName, keysPrefix }) {
   return result;
 }
 
-function copyObject({ s3, sourceBucketName, sourceKey, destinationBucketName, destinationKey, objectToCopy }) {
+function copyObject({ s3, sourceBucketName, sourceKey, destinationBucketName, destinationKey }) {
   const params = {
     Bucket: destinationBucketName,
     CopySource: `/${sourceBucketName}/${encodeURIComponent(sourceKey)}`,
     Key: destinationKey,
-    Metadata: { createdOn: objectToCopy.LastModified, ...objectToCopy.Metadata }
+    MetadataDirective: 'COPY'
   };
   return new Promise((resolve, reject) => {
     s3.copyObject(params, (err, data) => err ? reject(err) : resolve(data));
