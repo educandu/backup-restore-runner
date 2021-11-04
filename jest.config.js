@@ -1,5 +1,6 @@
 module.exports = () => {
   return {
-    verbose: true
+    verbose: true,
+    testMatch: ['**/src/*.spec.js']
   };
 };
