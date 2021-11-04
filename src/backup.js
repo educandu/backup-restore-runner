@@ -23,17 +23,21 @@ module.exports.backup = async () => {
   const slackClient = slack.getClient(env.slackWebhookUrl);
 
   const runMongoDbBackup = async () => {
+    let databaseName;
+
     try {
+      databaseName = stringHelper.getDatabaseNameFromUri(env.mongoDbUri);
+
       await mongoDbBackupRunner.run({
         s3,
         mongoDbUri: env.mongoDbUri,
+        databaseName,
         backupBucketName: env.backupBucketName,
         backupBucketFolder
       });
     } catch (error) {
-      const database = stringHelper.getDatabaseNameFromUri(env.mongoDbUri);
-      console.log('Failed to restore mongoDB', error);
-      await slackClient.notify(`Failed to restore mongoDB _${database}_`, error);
+      console.log('Failed to back up mongoDB', error);
+      await slackClient.notify(`Failed to back up mongoDB _${databaseName}_`, error);
       return false;
     }
     return true;
@@ -48,8 +52,8 @@ module.exports.backup = async () => {
         backupBucketFolder
       });
     } catch (error) {
-      console.log('Failed to restore mongoDB S3 bucket', error);
-      await slackClient.notify(`Failed to restore S3 bucket _${env.bucketName}_`, error);
+      console.log('Failed to back up mongoDB S3 bucket', error);
+      await slackClient.notify(`Failed to back up S3 bucket _${env.bucketName}_`, error);
       return false;
     }
     return true;

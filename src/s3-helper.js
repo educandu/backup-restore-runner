@@ -35,7 +35,6 @@ function copyObject({ s3, sourceBucketName, sourceKey, destinationBucketName, de
     CopySource: `/${sourceBucketName}/${encodeURIComponent(sourceKey)}`,
     Key: destinationKey
   };
-
   return new Promise((resolve, reject) => {
     s3.copyObject(params, (err, data) => err ? reject(err) : resolve(data));
   });

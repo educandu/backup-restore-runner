@@ -1,5 +1,16 @@
+const Graceful = require('node-graceful');
 const { backup } = require('./backup');
 const { restore } = require('./restore');
+
+Graceful.timeout = 5000;
+Graceful.exitOnDouble = true;
+Graceful.captureExceptions = true;
+Graceful.captureRejections = true;
+
+Graceful.on('exit', signal => {
+  console.log(`Received ${signal} signal, exiting process ...`);
+  process.exit(0);
+});
 
 const command = process.argv[2];
 

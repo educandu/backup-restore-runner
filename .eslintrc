@@ -2,7 +2,8 @@
   "extends": ["eslint:all", "plugin:import/recommended"],
   "env": {
     "es6": true,
-    "node": true
+    "node": true,
+    "jest/globals": true
   },
   "parserOptions": {
     "ecmaVersion": 2020,
@@ -17,7 +18,8 @@
     }
   },
   "plugins": [
-    "import"
+    "import",
+    "jest"
   ],
   "rules": {
     "array-element-newline": ["off"],
