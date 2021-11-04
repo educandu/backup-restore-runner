@@ -2,8 +2,7 @@ const fs = require('fs');
 const exec = require('child_process').exec;
 const stringHelper = require('./string-helper');
 
-module.exports.run = ({ s3, bucketName, objectKey, mongoDbUri }) => {
-  const databaseName = stringHelper.getDatabaseNameFromUri(mongoDbUri);
+module.exports.run = ({ s3, bucketName, objectKey, mongoDbUri, databaseName }) => {
   const zipFileName = stringHelper.getFileNameFromPath(objectKey);
   const unzipFolder = './temp';
 
