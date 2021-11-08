@@ -1,10 +1,10 @@
-function ensureEnv(name) {
+const ensureEnv = name => {
   const result = process.env[name];
   if (!result) {
     throw new Error(`Environment variable ${name} is missing or empty!`);
   }
   return result;
-}
+};
 
 const getCommonVariables = () => {
   return {
@@ -19,6 +19,18 @@ const getCommonVariables = () => {
   };
 };
 
+const ensureSanitizedS3ObjectKeysPrefix = () => {
+  let value = ensureEnv('S3_OBJECT_KEYS_PREFIX');
+
+  if (value.startsWith('/')) {
+    value = value.replace('/', '');
+  }
+  if (!value.endsWith('/')) {
+    value = `${value}/`;
+  }
+  return value;
+};
+
 exports.getForBackup = () => {
   return {
     ...getCommonVariables(),
@@ -30,6 +42,6 @@ exports.getForRestore = () => {
   return {
     ...getCommonVariables(),
     mongoDbObjectKey: ensureEnv('MONGODB_OBJECT_KEY'),
-    s3ObjectKeysPrefix: ensureEnv('S3_OBJECT_KEYS_PREFIX')
+    s3ObjectKeysPrefix: ensureSanitizedS3ObjectKeysPrefix()
   };
 };
