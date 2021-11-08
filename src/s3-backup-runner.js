@@ -1,7 +1,4 @@
-const mime = require('mime');
 const s3Helper = require('./s3-helper');
-
-const defaultContentType = 'application/octet-stream';
 
 module.exports.run = async ({ s3, bucketName, backupBucketName, backupBucketFolder }) => {
   console.log(`Starting S3 backup of bucket '${bucketName}' into bucket '${backupBucketName}' under folder '${backupBucketFolder}'`);
@@ -11,8 +8,6 @@ module.exports.run = async ({ s3, bucketName, backupBucketName, backupBucketFold
     const sourceKey = sourceObject.Key;
     const destinationKey = `${backupBucketFolder}/${bucketName}/${sourceKey}`;
 
-    const contentType = mime.getType(sourceKey) || defaultContentType;
-
     /* eslint-disable no-await-in-loop */
     await s3Helper.copyObject({
       s3,
@@ -20,7 +15,7 @@ module.exports.run = async ({ s3, bucketName, backupBucketName, backupBucketFold
       sourceKey,
       destinationBucketName: backupBucketName,
       destinationKey,
-      contentType
+      ensureContentType: true
     });
   }
 

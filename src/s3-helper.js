@@ -1,3 +1,16 @@
+const mime = require('mime');
+
+function getObjectHead({ s3, bucketName, key }) {
+  const params = {
+    Bucket: bucketName,
+    Key: key
+  };
+
+  return new Promise((resolve, reject) => {
+    s3.headObject(params, (err, data) => err ? reject(err) : resolve(data));
+  });
+}
+
 function listNext1000Objects({ s3, bucketName, keysPrefix, continuationToken }) {
   const params = {
     Bucket: bucketName,
@@ -29,15 +42,20 @@ async function listAllObjects({ s3, bucketName, keysPrefix }) {
   return result;
 }
 
-function copyObject({ s3, sourceBucketName, sourceKey, destinationBucketName, destinationKey, contentType }) {
+async function copyObject({ s3, sourceBucketName, sourceKey, destinationBucketName, destinationKey, ensureContentType }) {
   const params = {
     Bucket: destinationBucketName,
     CopySource: `/${sourceBucketName}/${encodeURIComponent(sourceKey)}`,
     Key: destinationKey
   };
 
-  if (contentType) {
+  if (ensureContentType) {
+    const head = await getObjectHead({ s3, bucketName: sourceBucketName, key: sourceKey });
+    const contentType = mime.getType(sourceKey) || 'application/octet-stream';
+
+    params.Metadata = head.Metadata;
     params.ContentType = contentType;
+    params.MetadataDirective = 'REPLACE';
   }
 
   return new Promise((resolve, reject) => {
