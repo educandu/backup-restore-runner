@@ -18,6 +18,7 @@ module.exports.run = ({ s3, bucketName, objectKey, mongoDbUri, databaseName }) =
       .on('error', s3Error => reject(s3Error))
       .on('close', () => {
         console.log(`Downloaded file '${zipFileName}'`);
+        fs.mkdirSync(unzipFolder);
 
         exec(`unzip ${zipFileName} -d ${unzipFolder}`, (unzipError, unzipStdOut) => {
           if (unzipError) {
