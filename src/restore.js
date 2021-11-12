@@ -16,7 +16,7 @@ module.exports.restore = async () => {
     credentials: new Credentials(env.s3AccessKey, env.s3SecretKey)
   });
 
-  const slackClient = slack.getClient(env.slackWebhookUrl);
+  const slackClient = slack.getClient(env.slackWebhookUrl, env.projectName);
 
   const runMongoDbRestore = async () => {
     let databaseName;
