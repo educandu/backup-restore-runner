@@ -20,7 +20,7 @@ module.exports.backup = async () => {
 
   const backupBucketFolder = dayjs().format('YYYYMMDD_HHmmss');
 
-  const slackClient = slack.getClient(env.slackWebhookUrl);
+  const slackClient = slack.getClient(env.slackWebhookUrl, env.projectName);
 
   const runMongoDbBackup = async () => {
     let databaseName;

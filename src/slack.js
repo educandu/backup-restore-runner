@@ -1,6 +1,6 @@
 const superagent = require('superagent');
 
-module.exports.getClient = slackWebhookUrl => {
+module.exports.getClient = (slackWebhookUrl, messagesPrefix = '') => {
   const response = {
     notify: () => { }
   };
@@ -9,11 +9,15 @@ module.exports.getClient = slackWebhookUrl => {
     return response;
   }
 
+  const prefix = messagesPrefix ? `_${messagesPrefix}_ \n` : '';
+
   return {
     notify: async (message, error) => {
-      const successtText = `:white_check_mark: ${message}`;
+      const successtText = `${prefix}:white_check_mark: ${message}`;
+
       const errorText
         = '<!channel> \n'
+        + `${prefix}`
         + `:x: ${message} \n`
         + `\`\`\`${JSON.stringify({ message: error?.message, stack: error?.stack })}\`\`\``;
 
