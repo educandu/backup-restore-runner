@@ -1,4 +1,4 @@
-import superagent from 'superagent';
+import axios from 'axios';
 
 function getClient(slackWebhookUrl, messagesPrefix = '') {
   const response = {
@@ -22,10 +22,12 @@ function getClient(slackWebhookUrl, messagesPrefix = '') {
         + `\`\`\`${JSON.stringify({ message: error?.message, stack: error?.stack })}\`\`\``;
 
       try {
-        await superagent
-          .post(slackWebhookUrl)
-          .type('json')
-          .send({ text: error ? errorText : successtText });
+        await axios
+          .post(
+            slackWebhookUrl,
+            { text: error ? errorText : successtText },
+            { responseType: 'json' }
+          );
       } catch (slackError) {
         console.log(slackError);
       }

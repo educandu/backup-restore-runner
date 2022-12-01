@@ -24,12 +24,12 @@
   "dependencies": {
     "archiver": "~5.3.1",
     "aws-sdk": "~2.1265.0",
+    "axios": "^1.2.0",
     "connection-string": "~4.3.6",
     "connection-string-parser": "~1.0.4",
     "dayjs": "~1.11.6",
     "mime": "~3.0.0",
-    "node-graceful": "~3.1.0",
-    "superagent": "~8.0.4"
+    "node-graceful": "~3.1.0"
   },
   "devDependencies": {
     "eslint": "~8.28.0",
