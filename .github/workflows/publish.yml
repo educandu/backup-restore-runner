@@ -31,8 +31,6 @@ jobs:
             release.txt
   push:
     runs-on: ubuntu-20.04
-    env:
-      NODE_ENV: development
     needs: [build]
     env:
       DOCKER_IMAGE: educandu/backup-restore-runner
