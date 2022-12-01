@@ -1,12 +1,12 @@
-const sinon = require('sinon');
-const slack = require('./slack');
-const { S3 } = require('aws-sdk');
-const { backup } = require('./backup');
-const envHelper = require('./env-helper');
-const cleanupRunner = require('./cleanup-runner');
-const s3BackupRunner = require('./s3-backup-runner');
-const mongoDbBackupRunner = require('./mongodb-backup-runner');
-const { beforeEach, afterEach, describe, expect, it } = require('vitest');
+import sinon from 'sinon';
+import { S3 } from 'aws-sdk';
+import slack from './slack.js';
+import { backup } from './backup.js';
+import envHelper from './env-helper.js';
+import cleanupRunner from './cleanup-runner.js';
+import s3BackupRunner from './s3-backup-runner.js';
+import mongoDbBackupRunner from './mongodb-backup-runner.js';
+import { beforeEach, afterEach, describe, it } from 'vitest';
 
 describe('backup', () => {
   const sandbox = sinon.createSandbox();
@@ -21,7 +21,7 @@ describe('backup', () => {
     sandbox.stub(console, 'log');
 
     sandbox.createStubInstance(S3);
-    slackClient = { notify: sinon.fake() };
+    slackClient = { notify: sinon.spy() };
 
     sandbox.stub(envHelper, 'getForBackup');
     sandbox.stub(slack, 'getClient').returns(slackClient);
@@ -76,7 +76,7 @@ describe('backup', () => {
     });
 
     it('should call slackClient', () => {
-      expect(slackClient.notify).toHaveBeenCalledWith('Created backup _20210101_103015_ in S3 bucket _myBackupBucket_');
+       sinon.assert.calledWith(slackClient.notify, 'Created backup _20210101_103015_ in S3 bucket _myBackupBucket_');
     });
   });
 
@@ -123,7 +123,7 @@ describe('backup', () => {
     });
 
     it('should call slackClient with the error', () => {
-      expect(slackClient.notify).toHaveBeenCalledWith('Failed to back up mongoDB _databaseName_', error);
+       sinon.assert.calledWith(slackClient.notify, 'Failed to back up mongoDB _databaseName_', error);
     });
   });
 
@@ -170,7 +170,7 @@ describe('backup', () => {
     });
 
     it('should call slackClient with the error', () => {
-      expect(slackClient.notify).toHaveBeenCalledWith('Failed to back up S3 bucket _myBucket_', error);
+       sinon.assert.calledWith(slackClient.notify, 'Failed to back up S3 bucket _myBucket_', error);
     });
   });
 
@@ -220,7 +220,7 @@ describe('backup', () => {
     });
 
     it('should call slackClient with the error', () => {
-      expect(slackClient.notify).toHaveBeenCalledWith('Failed to clean up S3 bucket _myBackupBucket_', error);
+       sinon.assert.calledWith(slackClient.notify, 'Failed to clean up S3 bucket _myBackupBucket_', error);
     });
   });
 });

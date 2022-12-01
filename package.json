@@ -2,6 +2,7 @@
   "name": "backup-runner",
   "version": "2.0.0",
   "description": "Tool for executing MongoDB and S3 backups",
+  "type": "module",
   "engines": {
     "node": ">=18.0.0"
   },

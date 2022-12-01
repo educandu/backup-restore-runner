@@ -32,17 +32,23 @@ const ensureSanitizedS3ObjectKeysPrefix = () => {
   return value;
 };
 
-exports.getForBackup = () => {
+function getForBackup() {
   return {
     ...getCommonVariables(),
     maxBackupCount: process.env.MAX_BACKUP_COUNT || 5
   };
-};
+}
 
-exports.getForRestore = () => {
+function getForRestore() {
   return {
     ...getCommonVariables(),
     mongoDbObjectKey: ensureEnv('MONGODB_OBJECT_KEY'),
     s3ObjectKeysPrefix: ensureSanitizedS3ObjectKeysPrefix()
   };
-};
+}
+
+
+export default {
+  getForBackup,
+  getForRestore
+}

@@ -1,6 +1,6 @@
-const superagent = require('superagent');
+import superagent from 'superagent';
 
-module.exports.getClient = (slackWebhookUrl, messagesPrefix = '') => {
+function getClient(slackWebhookUrl, messagesPrefix = '') {
   const response = {
     notify: () => { }
   };
@@ -31,4 +31,8 @@ module.exports.getClient = (slackWebhookUrl, messagesPrefix = '') => {
       }
     }
   };
-};
+}
+
+export default {
+  getClient
+}

@@ -1,6 +1,6 @@
-const s3Helper = require('./s3-helper');
+import s3Helper from './s3-helper.js';
 
-module.exports.run = async ({ s3, bucketName, backupBucketName, backupBucketFolder }) => {
+async function run({ s3, bucketName, backupBucketName, backupBucketFolder }) {
   console.log(`Starting S3 backup of bucket '${bucketName}' into bucket '${backupBucketName}' under folder '${backupBucketFolder}'`);
 
   const sourceObjects = await s3Helper.listAllObjects({ s3, bucketName });
@@ -20,4 +20,8 @@ module.exports.run = async ({ s3, bucketName, backupBucketName, backupBucketFold
   }
 
   console.log('Finished S3 backup.');
-};
+}
+
+export default {
+  run
+}

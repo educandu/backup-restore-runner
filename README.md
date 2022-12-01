@@ -13,8 +13,8 @@ NodeJS tool for running a MongoDB and an S3 bucket backup (in sequence).
 | S3_BUCKET | The name of the S3 bucket to back up | Backup, Restore |
 | S3_BACKUP_BUCKET | The name of the S3 bucket storing the backup | Backup, Restore |
 | MONGODB_URI | Format: `mongodb+srv://[user]:[pass]@[host]/[name]` | Backup, Restore |
-| MONGODB_OBJECT_KEY | The key of the mongoDB backup to restore (e.g. `20211027_092404/stag-elmu-web.zip`) | Restore |
-| S3_OBJECT_KEYS_PREFIX | The prefix of the S3 backup to restore (e.g. `20211027_092404/staging.cdn.elmu.online/`) | Restore |
+| MONGODB_OBJECT_KEY | The key of the mongoDB backup to restore (e.g. `20211027_092404/project-db-name.zip`) | Restore |
+| S3_OBJECT_KEYS_PREFIX | The prefix of the S3 backup to restore (e.g. `20211027_092404/project.cdn.domain/`) | Restore |
 | MAX_BACKUP_COUNT | The maximum number of (latest) backups to keep (defaults to 5) | Backup |
 | PROJECT_NAME | The name of the project being backed up [Optional] | Backup, Restore |
 | SLACK_WEBHOOK_URL | WebhookURL for sending Slack notifications with run statuses [Optional] | Backup, Restore |

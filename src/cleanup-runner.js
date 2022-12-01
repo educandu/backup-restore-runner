@@ -1,7 +1,7 @@
-const s3Helper = require('./s3-helper');
-const stringHelper = require('./string-helper');
+import s3Helper from './s3-helper.js';
+import stringHelper from './string-helper.js';
 
-module.exports.run = async ({ s3, backupBucketName, maxBackupCount }) => {
+async function run({ s3, backupBucketName, maxBackupCount }) {
   console.log(`Starting cleanup of the S3 bucket '${backupBucketName}' to reduce it to ${maxBackupCount} backups`);
 
   const backupObjects = await s3Helper.listAllObjects({ s3, bucketName: backupBucketName });
@@ -26,4 +26,8 @@ module.exports.run = async ({ s3, backupBucketName, maxBackupCount }) => {
   }
 
   console.log('Finished cleaning up.');
-};
+}
+
+export default {
+  run
+}
