@@ -6,6 +6,7 @@ const envHelper = require('./env-helper');
 const cleanupRunner = require('./cleanup-runner');
 const s3BackupRunner = require('./s3-backup-runner');
 const mongoDbBackupRunner = require('./mongodb-backup-runner');
+const { beforeEach, afterEach, describe, expect, it } = require('vitest');
 
 describe('backup', () => {
   const sandbox = sinon.createSandbox();
@@ -20,7 +21,7 @@ describe('backup', () => {
     sandbox.stub(console, 'log');
 
     sandbox.createStubInstance(S3);
-    slackClient = { notify: jest.fn() };
+    slackClient = { notify: sinon.fake() };
 
     sandbox.stub(envHelper, 'getForBackup');
     sandbox.stub(slack, 'getClient').returns(slackClient);

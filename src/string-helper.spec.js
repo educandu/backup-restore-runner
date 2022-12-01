@@ -1,4 +1,5 @@
 const stringHelper = require('./string-helper');
+const { describe, expect, it } = require('vitest');
 
 describe('stringHelper', () => {
 
