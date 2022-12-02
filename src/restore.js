@@ -1,11 +1,13 @@
-const slack = require('./slack');
-const envHelper = require('./env-helper');
-const { S3, Credentials } = require('aws-sdk');
-const stringHelper = require('./string-helper');
-const s3RestoreRunner = require('./s3-restore-runner');
-const mongoDbRestoreRunner = require('./mongodb-restore-runner');
+import slack from './slack.js';
+import AwsSdkNs from 'aws-sdk';
+import envHelper from './env-helper.js';
+import stringHelper from './string-helper.js';
+import s3RestoreRunner from './s3-restore-runner.js';
+import mongoDbRestoreRunner from './mongodb-restore-runner.js';
 
-module.exports.restore = async () => {
+const { S3, Credentials } = AwsSdkNs.default || AwsSdkNs;
+
+export async function restore() {
 
   const env = envHelper.getForRestore();
 
@@ -61,4 +63,4 @@ module.exports.restore = async () => {
   if (success) {
     slackClient.notify(`Restored backups _${env.mongoDbObjectKey}_ and _${env.s3ObjectKeysPrefix}_`);
   }
-};
+}

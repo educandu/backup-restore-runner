@@ -1,4 +1,5 @@
-const stringHelper = require('./string-helper');
+import stringHelper from './string-helper.js';
+import { describe, expect, it } from 'vitest';
 
 describe('stringHelper', () => {
 

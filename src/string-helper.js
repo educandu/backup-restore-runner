@@ -1,4 +1,4 @@
-const { ConnectionString } = require('connection-string');
+import { ConnectionString } from 'connection-string';
 
 function getFileNameFromPath(path) {
   const parts = path.split('/');
@@ -18,7 +18,7 @@ function getFolderNameFromS3Object(obj) {
   return obj.Key.split('/')[0];
 }
 
-module.exports = {
+export default {
   getFileNameFromPath,
   getDatabaseNameFromUri,
   getFolderNameFromS3Object

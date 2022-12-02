@@ -1,13 +1,15 @@
-const dayjs = require('dayjs');
-const slack = require('./slack');
-const envHelper = require('./env-helper');
-const { S3, Credentials } = require('aws-sdk');
-const stringHelper = require('./string-helper');
-const cleanupRunner = require('./cleanup-runner');
-const s3BackupRunner = require('./s3-backup-runner');
-const mongoDbBackupRunner = require('./mongodb-backup-runner');
+import dayjs from 'dayjs';
+import slack from './slack.js';
+import AwsSdkNs from 'aws-sdk';
+import envHelper from './env-helper.js';
+import stringHelper from './string-helper.js';
+import cleanupRunner from './cleanup-runner.js';
+import s3BackupRunner from './s3-backup-runner.js';
+import mongoDbBackupRunner from './mongodb-backup-runner.js';
 
-module.exports.backup = async () => {
+const { S3, Credentials } = AwsSdkNs.default || AwsSdkNs;
+
+export async function backup() {
 
   const env = envHelper.getForBackup();
 
@@ -81,4 +83,4 @@ module.exports.backup = async () => {
     await runCleanup();
     await slackClient.notify(`Created backup _${backupBucketFolder}_ in S3 bucket _${env.backupBucketName}_`);
   }
-};
+}

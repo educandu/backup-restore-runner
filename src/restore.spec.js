@@ -1,10 +1,11 @@
-const sinon = require('sinon');
-const slack = require('./slack');
-const { S3 } = require('aws-sdk');
-const { restore } = require('./restore');
-const envHelper = require('./env-helper');
-const s3RestoreRunner = require('./s3-restore-runner');
-const mongoDbRestoreRunner = require('./mongodb-restore-runner');
+import sinon from 'sinon';
+import slack from './slack.js';
+import { S3 } from 'aws-sdk';
+import { restore } from './restore.js';
+import envHelper from './env-helper.js';
+import s3RestoreRunner from './s3-restore-runner.js';
+import { beforeEach, afterEach, describe, it } from 'vitest';
+import mongoDbRestoreRunner from './mongodb-restore-runner.js';
 
 describe('restore', () => {
   const sandbox = sinon.createSandbox();
@@ -19,7 +20,7 @@ describe('restore', () => {
     sandbox.stub(console, 'log');
 
     sandbox.createStubInstance(S3);
-    slackClient = { notify: jest.fn() };
+    slackClient = { notify: sinon.spy() };
 
     sandbox.stub(envHelper, 'getForRestore');
     sandbox.stub(slack, 'getClient').returns(slackClient);
@@ -67,7 +68,7 @@ describe('restore', () => {
     });
 
     it('should call slackClient', () => {
-      expect(slackClient.notify).toHaveBeenCalledWith('Restored backups __20210101_103015_/databaseName.zip_ and __20210101_103015_/myBucketName/_');
+       sinon.assert.calledWith(slackClient.notify, 'Restored backups __20210101_103015_/databaseName.zip_ and __20210101_103015_/myBucketName/_');
     });
   });
 
@@ -111,7 +112,7 @@ describe('restore', () => {
     });
 
     it('should call slackClient with the error', () => {
-      expect(slackClient.notify).toHaveBeenCalledWith('Failed to restore mongoDB _databaseName_', error);
+       sinon.assert.calledWith(slackClient.notify, 'Failed to restore mongoDB _databaseName_', error);
     });
   });
 
@@ -155,7 +156,7 @@ describe('restore', () => {
     });
 
     it('should call slackClient with the error', () => {
-      expect(slackClient.notify).toHaveBeenCalledWith('Failed to restore S3 bucket _myBucket_', error);
+      sinon.assert.calledWith(slackClient.notify, 'Failed to restore S3 bucket _myBucket_', error);
     });
   });
 });

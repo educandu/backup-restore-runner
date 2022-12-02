@@ -1,8 +1,8 @@
-const fs = require('fs');
-const archiver = require('archiver');
-const exec = require('child_process').exec;
+import fs from 'node:fs';
+import archiver from 'archiver';
+import { exec } from 'node:child_process';
 
-module.exports.run = ({ s3, mongoDbUri, databaseName, backupBucketName, backupBucketFolder }) => {
+function run({ s3, mongoDbUri, databaseName, backupBucketName, backupBucketFolder }) {
   const fileName = databaseName;
   const fileNameWithExtension = `${fileName}.zip`;
   const folderName = `/tmp/${fileName}/`;
@@ -63,4 +63,8 @@ module.exports.run = ({ s3, mongoDbUri, databaseName, backupBucketName, backupBu
 
     });
   });
-};
+}
+
+export default {
+  run
+}

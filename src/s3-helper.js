@@ -1,4 +1,4 @@
-const mime = require('mime');
+import mime from 'mime';
 
 function getObjectHead({ s3, bucketName, key }) {
   const params = {
@@ -74,7 +74,7 @@ function deleteObject({ s3, bucketName, key }) {
   });
 }
 
-module.exports = {
+export default {
   listAllObjects,
   copyObject,
   deleteObject

@@ -1,8 +1,8 @@
-const fs = require('fs');
-const exec = require('child_process').exec;
-const stringHelper = require('./string-helper');
+import fs from 'node:fs';
+import { exec } from 'node:child_process';
+import stringHelper from './string-helper.js';
 
-module.exports.run = ({ s3, bucketName, objectKey, mongoDbUri, databaseName }) => {
+function run({ s3, bucketName, objectKey, mongoDbUri, databaseName }) {
   const zipFileName = stringHelper.getFileNameFromPath(objectKey);
   const unzipFolder = './temp';
 
@@ -42,4 +42,8 @@ module.exports.run = ({ s3, bucketName, objectKey, mongoDbUri, databaseName }) =
 
       });
   });
-};
+}
+
+export default {
+  run
+}
