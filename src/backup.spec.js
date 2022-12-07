@@ -1,15 +1,15 @@
-import sinon from 'sinon';
 import { S3 } from 'aws-sdk';
 import slack from './slack.js';
 import { backup } from './backup.js';
 import envHelper from './env-helper.js';
 import cleanupRunner from './cleanup-runner.js';
 import s3BackupRunner from './s3-backup-runner.js';
+import { assert, match, spy, createSandbox } from 'sinon';
 import mongoDbBackupRunner from './mongodb-backup-runner.js';
 import { beforeEach, afterEach, describe, it } from 'vitest';
 
 describe('backup', () => {
-  const sandbox = sinon.createSandbox();
+  const sandbox = createSandbox();
 
   let slackClient;
   const now = new Date('01.01.2021 10:30:15');
@@ -21,7 +21,7 @@ describe('backup', () => {
     sandbox.stub(console, 'log');
 
     sandbox.createStubInstance(S3);
-    slackClient = { notify: sinon.spy() };
+    slackClient = { notify: spy() };
 
     sandbox.stub(envHelper, 'getForBackup');
     sandbox.stub(slack, 'getClient').returns(slackClient);
@@ -48,11 +48,11 @@ describe('backup', () => {
     });
 
     it('should call slack.getClient', () => {
-      sinon.assert.calledWith(slack.getClient, 'mySlackWebhookUrl');
+      assert.calledWith(slack.getClient, 'mySlackWebhookUrl');
     });
 
     it('should call mongoDbBackupRunner', () => {
-      sinon.assert.calledWith(mongoDbBackupRunner.run, sinon.match({
+      assert.calledWith(mongoDbBackupRunner.run, match({
         mongoDbUri: 'mongodb+srv://root:password123@198.174.21.23:27017/databaseName',
         databaseName: 'databaseName',
         backupBucketName: 'myBackupBucket',
@@ -61,7 +61,7 @@ describe('backup', () => {
     });
 
     it('should call s3BackupRunner', () => {
-      sinon.assert.calledWith(s3BackupRunner.run, sinon.match({
+      assert.calledWith(s3BackupRunner.run, match({
         bucketName: 'myBucket',
         backupBucketName: 'myBackupBucket',
         backupBucketFolder: '20210101_103015'
@@ -69,14 +69,14 @@ describe('backup', () => {
     });
 
     it('should call cleanupRunner', () => {
-      sinon.assert.calledWith(cleanupRunner.run, sinon.match({
+      assert.calledWith(cleanupRunner.run, match({
         backupBucketName: 'myBackupBucket',
         maxBackupCount: 15
       }));
     });
 
     it('should call slackClient', () => {
-       sinon.assert.calledWith(slackClient.notify, 'Created backup _20210101_103015_ in S3 bucket _myBackupBucket_');
+       assert.calledWith(slackClient.notify, 'Created backup _20210101_103015_ in S3 bucket _myBackupBucket_');
     });
   });
 
@@ -98,11 +98,11 @@ describe('backup', () => {
     });
 
     it('should call slack.getClient', () => {
-      sinon.assert.calledWith(slack.getClient, 'mySlackWebhookUrl');
+      assert.calledWith(slack.getClient, 'mySlackWebhookUrl');
     });
 
     it('should call mongoDbBackupRunner', () => {
-      sinon.assert.calledWith(mongoDbBackupRunner.run, sinon.match({
+      assert.calledWith(mongoDbBackupRunner.run, match({
         mongoDbUri: 'mongodb+srv://root:password123@198.174.21.23:27017/databaseName',
         databaseName: 'databaseName',
         backupBucketName: 'myBackupBucket',
@@ -111,7 +111,7 @@ describe('backup', () => {
     });
 
     it('should call s3BackupRunner', () => {
-      sinon.assert.calledWith(s3BackupRunner.run, sinon.match({
+      assert.calledWith(s3BackupRunner.run, match({
         bucketName: 'myBucket',
         backupBucketName: 'myBackupBucket',
         backupBucketFolder: '20210101_103015'
@@ -119,11 +119,11 @@ describe('backup', () => {
     });
 
     it('should not call cleanupRunner', () => {
-      sinon.assert.notCalled(cleanupRunner.run);
+      assert.notCalled(cleanupRunner.run);
     });
 
     it('should call slackClient with the error', () => {
-       sinon.assert.calledWith(slackClient.notify, 'Failed to back up mongoDB _databaseName_', error);
+       assert.calledWith(slackClient.notify, 'Failed to back up mongoDB _databaseName_', error);
     });
   });
 
@@ -145,11 +145,11 @@ describe('backup', () => {
     });
 
     it('should call slack.getClient', () => {
-      sinon.assert.calledWith(slack.getClient, 'mySlackWebhookUrl');
+      assert.calledWith(slack.getClient, 'mySlackWebhookUrl');
     });
 
     it('should call mongoDbBackupRunner', () => {
-      sinon.assert.calledWith(mongoDbBackupRunner.run, sinon.match({
+      assert.calledWith(mongoDbBackupRunner.run, match({
         mongoDbUri: 'mongodb+srv://root:password123@198.174.21.23:27017/databaseName',
         databaseName: 'databaseName',
         backupBucketName: 'myBackupBucket',
@@ -158,7 +158,7 @@ describe('backup', () => {
     });
 
     it('should call s3BackupRunner', () => {
-      sinon.assert.calledWith(s3BackupRunner.run, sinon.match({
+      assert.calledWith(s3BackupRunner.run, match({
         bucketName: 'myBucket',
         backupBucketName: 'myBackupBucket',
         backupBucketFolder: '20210101_103015'
@@ -166,11 +166,11 @@ describe('backup', () => {
     });
 
     it('should not call cleanupRunner', () => {
-      sinon.assert.notCalled(cleanupRunner.run);
+      assert.notCalled(cleanupRunner.run);
     });
 
     it('should call slackClient with the error', () => {
-       sinon.assert.calledWith(slackClient.notify, 'Failed to back up S3 bucket _myBucket_', error);
+       assert.calledWith(slackClient.notify, 'Failed to back up S3 bucket _myBucket_', error);
     });
   });
 
@@ -192,11 +192,11 @@ describe('backup', () => {
     });
 
     it('should call slack.getClient', () => {
-      sinon.assert.calledWith(slack.getClient, 'mySlackWebhookUrl');
+      assert.calledWith(slack.getClient, 'mySlackWebhookUrl');
     });
 
     it('should call mongoDbBackupRunner', () => {
-      sinon.assert.calledWith(mongoDbBackupRunner.run, sinon.match({
+      assert.calledWith(mongoDbBackupRunner.run, match({
         mongoDbUri: 'mongodb+srv://root:password123@198.174.21.23:27017/databaseName',
         databaseName: 'databaseName',
         backupBucketName: 'myBackupBucket',
@@ -205,7 +205,7 @@ describe('backup', () => {
     });
 
     it('should call s3BackupRunner', () => {
-      sinon.assert.calledWith(s3BackupRunner.run, sinon.match({
+      assert.calledWith(s3BackupRunner.run, match({
         bucketName: 'myBucket',
         backupBucketName: 'myBackupBucket',
         backupBucketFolder: '20210101_103015'
@@ -213,14 +213,14 @@ describe('backup', () => {
     });
 
     it('should call cleanupRunner', () => {
-      sinon.assert.calledWith(cleanupRunner.run, sinon.match({
+      assert.calledWith(cleanupRunner.run, match({
         backupBucketName: 'myBackupBucket',
         maxBackupCount: 15
       }));
     });
 
     it('should call slackClient with the error', () => {
-       sinon.assert.calledWith(slackClient.notify, 'Failed to clean up S3 bucket _myBackupBucket_', error);
+       assert.calledWith(slackClient.notify, 'Failed to clean up S3 bucket _myBackupBucket_', error);
     });
   });
 });
