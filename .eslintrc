@@ -1,6 +1,7 @@
 {
   "extends": [
-    "eslint:recommended"
+    "eslint:recommended",
+    "plugin:import/recommended"
   ],
   "env": {
     "es6": true,
