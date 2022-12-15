@@ -20,7 +20,6 @@ async function run({ s3, backupBucketName, maxBackupCount }) {
     const folderName = stringHelper.getFolderNameFromS3Object(obj);
 
     if (backupFoldersToDelete.includes(folderName)) {
-      /* eslint-disable no-await-in-loop */
       await s3Helper.deleteObject({ s3, bucketName: backupBucketName, key: obj.Key });
     }
   }
@@ -30,4 +29,4 @@ async function run({ s3, backupBucketName, maxBackupCount }) {
 
 export default {
   run
-}
+};

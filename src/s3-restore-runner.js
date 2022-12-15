@@ -6,7 +6,6 @@ async function run({ s3, bucketName, backupBucketName, backupKeysPrefix }) {
   console.log(`Removing existing objects from bucket '${bucketName}'`);
   const currentBucketObjects = await s3Helper.listAllObjects({ s3, bucketName });
   for (const obj of currentBucketObjects) {
-    /* eslint-disable no-await-in-loop */
     await s3Helper.deleteObject({ s3, bucketName, key: obj.Key });
   }
 
@@ -16,7 +15,6 @@ async function run({ s3, bucketName, backupBucketName, backupKeysPrefix }) {
     const sourceKey = obj.Key;
     const destinationKey = obj.Key.replace(backupKeysPrefix, '');
 
-    /* eslint-disable no-await-in-loop */
     await s3Helper.copyObject({
       s3,
       sourceBucketName: backupBucketName,
@@ -31,4 +29,4 @@ async function run({ s3, bucketName, backupBucketName, backupKeysPrefix }) {
 
 export default {
   run
-}
+};

@@ -18,7 +18,7 @@ const command = process.argv[2];
   try {
     switch (command) {
       case 'backup':
-          await backup();
+        await backup();
         break;
       case 'restore':
         await restore();
@@ -28,8 +28,7 @@ const command = process.argv[2];
         process.exit(-1);
         break;
     }
-  }
-  catch (error) {
+  } catch (error) {
     console.log('ERROR: ', error);
   }
 })();

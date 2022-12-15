@@ -68,7 +68,7 @@ describe('restore', () => {
     });
 
     it('should call slackClient', () => {
-       assert.calledWith(slackClient.notify, 'Restored backups __20210101_103015_/databaseName.zip_ and __20210101_103015_/myBucketName/_');
+      assert.calledWith(slackClient.notify, 'Restored backups __20210101_103015_/databaseName.zip_ and __20210101_103015_/myBucketName/_');
     });
   });
 
@@ -112,7 +112,7 @@ describe('restore', () => {
     });
 
     it('should call slackClient with the error', () => {
-       assert.calledWith(slackClient.notify, 'Failed to restore mongoDB _databaseName_', error);
+      assert.calledWith(slackClient.notify, 'Failed to restore mongoDB _databaseName_', error);
     });
   });
 

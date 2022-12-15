@@ -46,4 +46,4 @@ function run({ s3, bucketName, objectKey, mongoDbUri, databaseName }) {
 
 export default {
   run
-}
+};

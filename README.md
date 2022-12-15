@@ -1,6 +1,15 @@
-# backup-runner
+# backup-restore-runner
+
+[![codecov](https://codecov.io/gh/educandu/backup-restore-runner/branch/main/graph/badge.svg)](https://codecov.io/gh/educandu/backup-restore-runner)
 
 NodeJS tool for running a MongoDB and an S3 bucket backup (in sequence).
+
+## Prerequisites
+
+* node.js ^18.0.0
+* optional: globally installed gulp: `npm i -g gulp-cli`
+
+The output of this repository is a Docker image (`educandu/backup-restore-runner`).
 
 ## Environment variables
 
@@ -18,6 +27,7 @@ NodeJS tool for running a MongoDB and an S3 bucket backup (in sequence).
 | MAX_BACKUP_COUNT | The maximum number of (latest) backups to keep (defaults to 5) | Backup |
 | PROJECT_NAME | The name of the project being backed up [Optional] | Backup, Restore |
 | SLACK_WEBHOOK_URL | WebhookURL for sending Slack notifications with run statuses [Optional] | Backup, Restore |
+
 ## Usage
 
 Create the docker image:

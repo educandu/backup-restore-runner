@@ -37,4 +37,4 @@ function getClient(slackWebhookUrl, messagesPrefix = '') {
 
 export default {
   getClient
-}
+};

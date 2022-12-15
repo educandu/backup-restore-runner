@@ -76,7 +76,7 @@ describe('backup', () => {
     });
 
     it('should call slackClient', () => {
-       assert.calledWith(slackClient.notify, 'Created backup _20210101_103015_ in S3 bucket _myBackupBucket_');
+      assert.calledWith(slackClient.notify, 'Created backup _20210101_103015_ in S3 bucket _myBackupBucket_');
     });
   });
 
@@ -123,7 +123,7 @@ describe('backup', () => {
     });
 
     it('should call slackClient with the error', () => {
-       assert.calledWith(slackClient.notify, 'Failed to back up mongoDB _databaseName_', error);
+      assert.calledWith(slackClient.notify, 'Failed to back up mongoDB _databaseName_', error);
     });
   });
 
@@ -170,7 +170,7 @@ describe('backup', () => {
     });
 
     it('should call slackClient with the error', () => {
-       assert.calledWith(slackClient.notify, 'Failed to back up S3 bucket _myBucket_', error);
+      assert.calledWith(slackClient.notify, 'Failed to back up S3 bucket _myBucket_', error);
     });
   });
 
@@ -220,7 +220,7 @@ describe('backup', () => {
     });
 
     it('should call slackClient with the error', () => {
-       assert.calledWith(slackClient.notify, 'Failed to clean up S3 bucket _myBackupBucket_', error);
+      assert.calledWith(slackClient.notify, 'Failed to clean up S3 bucket _myBackupBucket_', error);
     });
   });
 });

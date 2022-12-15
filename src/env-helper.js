@@ -47,8 +47,7 @@ function getForRestore() {
   };
 }
 
-
 export default {
   getForBackup,
   getForRestore
-}
+};
