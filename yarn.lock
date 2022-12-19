@@ -779,10 +779,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@educandu/dev-tools@~6.0.1":
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/@educandu/dev-tools/-/dev-tools-6.0.1.tgz#2f9a16a02a48ccb2edf867cb87b74c5bb377dc92"
-  integrity sha512-snqFJxhoh6ilLnRHL91B2lrDfrVmgCGdt4XQpQ0BXksq3t+p4CqkbKpmusbgHRA4D8veCgvpmJxDdEidkxltNQ==
+"@educandu/dev-tools@~6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@educandu/dev-tools/-/dev-tools-6.0.2.tgz#4059b665ca0bb49ce6d9646043bf01d879df647d"
+  integrity sha512-bSvD72Bne8CKGPSAhlmlymKCROtYz4bxPC897KcXw4sA7i6BOsMMQM+cJI+z+JFbetOJE5w77wWEcJxBJ1buSQ==
   dependencies:
     "@rauschma/stringio" "^1.4.0"
     axios "^1.2.1"
@@ -810,10 +810,10 @@
     yaml "^2.1.3"
     yargs "^17.6.2"
 
-"@educandu/eslint-config@~1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@educandu/eslint-config/-/eslint-config-1.0.2.tgz#cf2654076b5d3339189f26ec80919680f2d9d0b3"
-  integrity sha512-SZncApLssKJrOZ0IZOooW5d+NHpTM5Q64UJdCaEVFWBgvrLwx6P4Ai8R3f5sB2U5/ds80qbJM9W0TqrL2naVxA==
+"@educandu/eslint-config@~2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@educandu/eslint-config/-/eslint-config-2.0.0.tgz#9ca002d60fbbd13e9675dc22e0f5833f53e9a2f4"
+  integrity sha512-0wmNavn3AHw/ASh/Eql0ylLFdk+27+csa/4U1WFx6BzmfFkxo/VXTIfJW4K1pGkzm6blyMZ3wFmUzJv93M+mbg==
 
 "@esbuild/android-arm64@0.16.7":
   version "0.16.7"
@@ -5920,9 +5920,9 @@ run-parallel@^1.1.9:
     queue-microtask "^1.2.2"
 
 rxjs@^7.5.7:
-  version "7.6.0"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.6.0.tgz#361da5362b6ddaa691a2de0b4f2d32028f1eb5a2"
-  integrity sha512-DDa7d8TFNUalGC9VqXvQ1euWNN7sc63TrUCuM9J998+ViviahMIjKSOU7rfcgFOF+FCD71BhDRv4hrFz+ImDLQ==
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.8.0.tgz#90a938862a82888ff4c7359811a595e14e1e09a4"
+  integrity sha512-F2+gxDshqmIub1KdvZkaEfGDwLNpPvk9Fs6LD/MyQxNgMds/WH9OdDDXOmxUZpME+iSK3rQCctkL0DYyytUqMg==
   dependencies:
     tslib "^2.1.0"
 
