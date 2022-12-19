@@ -8,7 +8,6 @@ async function run({ s3, bucketName, backupBucketName, backupBucketFolder }) {
     const sourceKey = sourceObject.Key;
     const destinationKey = `${backupBucketFolder}/${bucketName}/${sourceKey}`;
 
-    /* eslint-disable no-await-in-loop */
     await s3Helper.copyObject({
       s3,
       sourceBucketName: bucketName,
@@ -24,4 +23,4 @@ async function run({ s3, bucketName, backupBucketName, backupBucketFolder }) {
 
 export default {
   run
-}
+};

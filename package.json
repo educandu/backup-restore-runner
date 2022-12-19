@@ -1,12 +1,15 @@
 {
-  "name": "backup-runner",
-  "version": "2.0.0",
+  "name": "@educandu/backup-restore-runner",
+  "version": "0.0.0",
   "description": "Tool for executing MongoDB and S3 backups",
   "type": "module",
+  "private": true,
   "engines": {
-    "node": ">=18.0.0"
+    "node": "^18.0.0"
   },
-  "keywords": [],
+  "keywords": [
+    "educandu"
+  ],
   "license": "MIT",
   "author": "Educandu Team <team@educandu.dev>",
   "homepage": "https://github.com/educandu/backup-restore-runner",
@@ -14,27 +17,27 @@
     "type": "git",
     "url": "https://github.com/educandu/backup-restore-runner"
   },
-  "private": true,
-  "scripts": {
-    "lint": "eslint \"**/*.js\"",
-    "test": "vitest --run",
-    "backup": "node ./src/index.js backup",
-    "restore": "node ./src/index.js restore"
-  },
   "dependencies": {
     "archiver": "~5.3.1",
-    "aws-sdk": "~2.1265.0",
-    "axios": "^1.2.0",
+    "aws-sdk": "~2.1277.0",
+    "axios": "^1.2.1",
     "connection-string": "~4.3.6",
     "connection-string-parser": "~1.0.4",
-    "dayjs": "~1.11.6",
+    "dayjs": "~1.11.7",
     "mime": "~3.0.0",
     "node-graceful": "~3.1.0"
   },
   "devDependencies": {
-    "eslint": "~8.28.0",
+    "@educandu/dev-tools": "~6.0.0",
+    "@educandu/eslint-config": "~1.0.2",
+    "@vitest/coverage-c8": "~0.25.8",
+    "del": "~7.0.0",
+    "eslint": "~8.30.0",
     "eslint-plugin-import": "~2.26.0",
-    "sinon": "~15.0.0",
-    "vitest": "~0.25.3"
+    "eslint-plugin-react": "~7.31.11",
+    "eslint-plugin-react-hooks": "~4.6.0",
+    "gulp": "~4.0.2",
+    "sinon": "~15.0.1",
+    "vitest": "~0.25.8"
   }
 }

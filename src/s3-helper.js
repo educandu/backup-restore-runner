@@ -29,7 +29,6 @@ async function listAllObjects({ s3, bucketName, keysPrefix }) {
   let continuationToken = null;
 
   do {
-    /* eslint-disable no-await-in-loop */
     const currentResult = await listNext1000Objects({ s3, bucketName, keysPrefix, continuationToken });
     if (currentResult.Contents.length) {
       result = result.concat(currentResult.Contents);
