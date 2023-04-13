@@ -49,10 +49,6 @@ with providing the correct values for the environment variables and as the comma
 - `backup`
 - `restore`
 
-## License
-
-Educandu is released under the MIT License. See the bundled LICENSE file for details.
-
 ---
 
 ## OER learning platform for music
