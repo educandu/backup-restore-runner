@@ -6,22 +6,21 @@ function getObjectHead({ s3, bucketName, key }) {
     Key: key
   };
 
-  return new Promise((resolve, reject) => {
-    s3.headObject(params, (err, data) => err ? reject(err) : resolve(data));
-  });
+  return s3.headObject(params);
 }
 
-function listNext1000Objects({ s3, bucketName, keysPrefix, continuationToken }) {
+function listNext1000Objects(s3, bucketName, prefix, continuationToken) {
   const params = {
     Bucket: bucketName,
-    Prefix: keysPrefix,
     MaxKeys: 1000,
     ContinuationToken: continuationToken
   };
 
-  return new Promise((resolve, reject) => {
-    s3.listObjectsV2(params, (err, data) => err ? reject(err) : resolve(data));
-  });
+  if (prefix) {
+    params.Prefix = prefix;
+  }
+
+  return s3.listObjectsV2(params);
 }
 
 async function listAllObjects({ s3, bucketName, keysPrefix }) {
@@ -29,8 +28,8 @@ async function listAllObjects({ s3, bucketName, keysPrefix }) {
   let continuationToken = null;
 
   do {
-    const currentResult = await listNext1000Objects({ s3, bucketName, keysPrefix, continuationToken });
-    if (currentResult.Contents.length) {
+    const currentResult = await listNext1000Objects(s3, bucketName, keysPrefix, continuationToken);
+    if (currentResult.Contents?.length) {
       result = result.concat(currentResult.Contents);
       continuationToken = currentResult.NextContinuationToken || null;
     } else {
@@ -57,9 +56,7 @@ async function copyObject({ s3, sourceBucketName, sourceKey, destinationBucketNa
     params.MetadataDirective = 'REPLACE';
   }
 
-  return new Promise((resolve, reject) => {
-    s3.copyObject(params, (err, data) => err ? reject(err) : resolve(data));
-  });
+  return s3.copyObject(params);
 }
 
 function deleteObject({ s3, bucketName, key }) {
@@ -68,9 +65,7 @@ function deleteObject({ s3, bucketName, key }) {
     Key: key
   };
 
-  return new Promise((resolve, reject) => {
-    s3.deleteObject(params, (err, data) => err ? reject(err) : resolve(data));
-  });
+  return s3.deleteObject(params);
 }
 
 export default {
