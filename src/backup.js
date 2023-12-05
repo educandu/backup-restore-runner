@@ -1,13 +1,11 @@
 import dayjs from 'dayjs';
 import slack from './slack.js';
-import AwsSdkNs from 'aws-sdk';
+import { S3 } from '@aws-sdk/client-s3';
 import envHelper from './env-helper.js';
 import stringHelper from './string-helper.js';
 import cleanupRunner from './cleanup-runner.js';
 import s3BackupRunner from './s3-backup-runner.js';
 import mongoDbBackupRunner from './mongodb-backup-runner.js';
-
-const { S3, Credentials } = AwsSdkNs.default || AwsSdkNs;
 
 export async function backup() {
 
@@ -17,7 +15,10 @@ export async function backup() {
     apiVersion: '2006-03-01',
     endpoint: env.s3Endpoint,
     region: env.s3Region,
-    credentials: new Credentials(env.s3AccessKey, env.s3SecretKey)
+    credentials: {
+      accessKeyId: env.s3AccessKey,
+      secretAccessKey: env.s3SecretKey
+    }
   });
 
   const backupBucketFolder = dayjs().format('YYYYMMDD_HHmmss');

@@ -1,6 +1,6 @@
 import slack from './slack.js';
-import { S3 } from 'aws-sdk';
 import { restore } from './restore.js';
+import { S3 } from '@aws-sdk/client-s3';
 import envHelper from './env-helper.js';
 import s3RestoreRunner from './s3-restore-runner.js';
 import { assert, match, spy, createSandbox } from 'sinon';

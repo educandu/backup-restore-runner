@@ -1,6 +1,6 @@
-import { S3 } from 'aws-sdk';
 import slack from './slack.js';
 import { backup } from './backup.js';
+import { S3 } from '@aws-sdk/client-s3';
 import envHelper from './env-helper.js';
 import cleanupRunner from './cleanup-runner.js';
 import s3BackupRunner from './s3-backup-runner.js';
