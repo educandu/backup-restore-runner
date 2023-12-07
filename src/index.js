@@ -7,8 +7,12 @@ Graceful.exitOnDouble = true;
 Graceful.captureExceptions = true;
 Graceful.captureRejections = true;
 
-Graceful.on('exit', signal => {
+Graceful.on('exit', (signal, detail) => {
   console.log(`Received ${signal} signal, exiting process ...`);
+  if (detail) {
+    console.log(detail);
+  }
+
   process.exit(0);
 });
 
