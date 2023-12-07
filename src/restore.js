@@ -1,7 +1,7 @@
 import slack from './slack.js';
-import { S3 } from '@aws-sdk/client-s3';
 import envHelper from './env-helper.js';
 import stringHelper from './string-helper.js';
+import { createS3Client } from './s3-helper.js';
 import s3RestoreRunner from './s3-restore-runner.js';
 import mongoDbRestoreRunner from './mongodb-restore-runner.js';
 
@@ -9,14 +9,11 @@ export async function restore() {
 
   const env = envHelper.getForRestore();
 
-  const s3 = new S3({
-    apiVersion: '2006-03-01',
+  const s3 = createS3Client({
     endpoint: env.s3Endpoint,
     region: env.s3Region,
-    credentials: {
-      accessKeyId: env.s3AccessKey,
-      secretAccessKey: env.s3SecretKey
-    }
+    accessKey: env.s3AccessKey,
+    secretKey: env.s3SecretKey
   });
 
   const slackClient = slack.getClient(env.slackWebhookUrl, env.projectName);

@@ -1,7 +1,7 @@
 import slack from './slack.js';
 import { restore } from './restore.js';
-import { S3 } from '@aws-sdk/client-s3';
 import envHelper from './env-helper.js';
+import { S3Client } from '@aws-sdk/client-s3';
 import s3RestoreRunner from './s3-restore-runner.js';
 import { assert, match, spy, createSandbox } from 'sinon';
 import { beforeEach, afterEach, describe, it } from 'vitest';
@@ -19,7 +19,7 @@ describe('restore', () => {
     });
     sandbox.stub(console, 'log');
 
-    sandbox.createStubInstance(S3);
+    sandbox.createStubInstance(S3Client);
     slackClient = { notify: spy() };
 
     sandbox.stub(envHelper, 'getForRestore');

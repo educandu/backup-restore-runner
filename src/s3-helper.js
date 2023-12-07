@@ -1,4 +1,17 @@
 import mime from 'mime';
+import { S3Client } from '@aws-sdk/client-s3';
+
+export function createS3Client({ endpoint, region, accessKey, secretKey }) {
+  return new S3Client({
+    apiVersion: '2006-03-01',
+    endpoint,
+    region,
+    credentials: {
+      accessKeyId: accessKey,
+      secretAccessKey: secretKey
+    }
+  });
+}
 
 function getObjectHead({ s3, bucketName, key }) {
   const params = {

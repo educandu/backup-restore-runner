@@ -1,7 +1,7 @@
 import slack from './slack.js';
 import { backup } from './backup.js';
-import { S3 } from '@aws-sdk/client-s3';
 import envHelper from './env-helper.js';
+import { S3Client } from '@aws-sdk/client-s3';
 import cleanupRunner from './cleanup-runner.js';
 import s3BackupRunner from './s3-backup-runner.js';
 import { assert, match, spy, createSandbox } from 'sinon';
@@ -20,7 +20,7 @@ describe('backup', () => {
     });
     sandbox.stub(console, 'log');
 
-    sandbox.createStubInstance(S3);
+    sandbox.createStubInstance(S3Client);
     slackClient = { notify: spy() };
 
     sandbox.stub(envHelper, 'getForBackup');
