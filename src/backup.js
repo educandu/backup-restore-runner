@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import slack from './slack.js';
+import s3Helper from './s3-helper.js';
 import envHelper from './env-helper.js';
 import stringHelper from './string-helper.js';
 import cleanupRunner from './cleanup-runner.js';
-import { createS3Client } from './s3-helper.js';
 import s3BackupRunner from './s3-backup-runner.js';
 import mongoDbBackupRunner from './mongodb-backup-runner.js';
 
@@ -11,7 +11,7 @@ export async function backup() {
 
   const env = envHelper.getForBackup();
 
-  const s3 = createS3Client({
+  const s3 = s3Helper.createS3Client({
     endpoint: env.s3Endpoint,
     region: env.s3Region,
     accessKey: env.s3AccessKey,

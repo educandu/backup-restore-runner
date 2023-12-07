@@ -1,7 +1,9 @@
 import mime from 'mime';
+import fs from 'node:fs';
+import { Upload } from '@aws-sdk/lib-storage';
 import { S3Client } from '@aws-sdk/client-s3';
 
-export function createS3Client({ endpoint, region, accessKey, secretKey }) {
+function createS3Client({ endpoint, region, accessKey, secretKey }) {
   return new S3Client({
     apiVersion: '2006-03-01',
     endpoint,
@@ -53,6 +55,36 @@ async function listAllObjects({ s3, bucketName, keysPrefix }) {
   return result;
 }
 
+function downloadObject({ s3, bucketName, key, fileName }) {
+  return new Promise((resolve, reject) => {
+    const fileWriteStream = fs.createWriteStream(fileName);
+    const s3Stream = s3.getObject({ Bucket: bucketName, Key: key }).createReadStream();
+    s3Stream.on('error', s3Error => reject(s3Error));
+    s3Stream.pipe(fileWriteStream)
+      .on('error', reject)
+      .on('close', resolve);
+  });
+}
+
+async function uploadObject({ s3, bucketName, key, fileName }) {
+  const fileReadStream = fs.createReadStream(fileName);
+
+  const upload = new Upload({
+    client: s3,
+    params: {
+      Bucket: bucketName,
+      Key: key,
+      Body: fileReadStream,
+      ContentType: mime.getType(fileName)
+    },
+    queueSize: 1,
+    partSize: 10 * 1024 * 1024,
+    leavePartsOnError: false
+  });
+
+  await upload.done();
+}
+
 async function copyObject({ s3, sourceBucketName, sourceKey, destinationBucketName, destinationKey, ensureContentType }) {
   const params = {
     Bucket: destinationBucketName,
@@ -82,7 +114,10 @@ function deleteObject({ s3, bucketName, key }) {
 }
 
 export default {
+  createS3Client,
   listAllObjects,
+  downloadObject,
+  uploadObject,
   copyObject,
   deleteObject
 };
