@@ -1,10 +1,10 @@
 import mime from 'mime';
 import fs from 'node:fs';
+import { S3 } from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
-import { S3Client } from '@aws-sdk/client-s3';
 
-function createS3Client({ endpoint, region, accessKey, secretKey }) {
-  return new S3Client({
+function createS3({ endpoint, region, accessKey, secretKey }) {
+  return new S3({
     apiVersion: '2006-03-01',
     endpoint,
     region,
@@ -114,7 +114,7 @@ function deleteObject({ s3, bucketName, key }) {
 }
 
 export default {
-  createS3Client,
+  createS3,
   listAllObjects,
   downloadObject,
   uploadObject,

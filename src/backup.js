@@ -11,7 +11,7 @@ export async function backup() {
 
   const env = envHelper.getForBackup();
 
-  const s3 = s3Helper.createS3Client({
+  const s3 = s3Helper.createS3({
     endpoint: env.s3Endpoint,
     region: env.s3Region,
     accessKey: env.s3AccessKey,
