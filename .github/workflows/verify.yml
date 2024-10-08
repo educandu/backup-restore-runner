@@ -30,3 +30,5 @@ jobs:
         uses: codecov/codecov-action@v4.6.0
         with:
           files: ./coverage/coverage-final.json
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
